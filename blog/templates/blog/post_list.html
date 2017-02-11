@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
+    <meta charset="UTF-8">
+    <title>小手的小房子-玩具Blog</title>
+</head>
+<body>
+<div>
+    <h1><a href="/">小手的小房子-玩具Blog</a></h1>
+</div>
+
+{% for post in posts %}
+    <div>
+        <p>published: {{ post.published_date }}</p>
+
+        <h1><a href="">{{ post.title }}</a></h1>
+
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
+{% endfor %}
+</body>
+</html>
