@@ -41,12 +41,14 @@ class WeixinInterfaceView(View):
         msgType = xml.find('MsgType').text
         content = xml.find('Content').text  # 获得用户所输入的内容
         msgId = xml.find('MsgId').text
+        content = ''.join([u'我现在只能学你说话:', content,
+                           u'\n反过来说也行:', content[::-1]])
         return render(request, 'reply_text.xml',
                       {'toUserName': fromUserName,
                        'fromUserName': toUserName,
                        'createTime': time.time(),
                        'msgType': msgType,
                        'content': content,
-                      },
-                      content_type='application/xml'
+                       },
+                       content_type = 'application/xml'
         )
