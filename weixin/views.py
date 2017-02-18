@@ -50,5 +50,5 @@ class WeixinInterfaceView(View):
                        'msgType': msgType,
                        'content': content,
                        },
-                       content_type = 'application/xml'
-        )
+                      content_type='application/xml'
+                      )
