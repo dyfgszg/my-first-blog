@@ -35,10 +35,10 @@ class WeixinInterfaceView(View):
         recMsg = parse_xml(str_xml)
 
         if recMsg.Content == "help":
-            recMsg.dict['Content'] = '1、直接回复，学你说话\n2、回复 cy+成语，玩成语接成'
+            recMsg.dict['Content'] = u'1、直接回复，学你说话\n2、回复 cy+成语，玩成语接成'
         else:
             recMsg.dict['Content'] = ''.join(['我现在只能学你说话:', recMsg.Content,
-                           '\n反过来说也行:', recMsg.Content[::-1]])
+                           u'\n反过来说也行:', recMsg.Content[::-1]])
         return render(request, 'reply_text.xml',
                       recMsg.dict, content_type='application/xml'
                       )
