@@ -32,6 +32,7 @@ class TextMsg(Msg):
         self.dict['FromUserName'] = self.FromUserName
         self.dict['CreateTime'] = int(time.time())
         self.dict['Content'] = self.Content
+        self.dict['MsgType'] = self.MsgType
 
 
 class Base(object):
@@ -88,44 +89,3 @@ class Menu(object):
        postUrl = "https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=%s" % accessToken
        urlResp = urllib.request.urlopen(url=postUrl)
        print(urlResp.read())
-
-if __name__ == '__main__':
-    myMenu = Menu()
-    postJson = """
-    {
-        "button":
-        [
-            {
-                "type": "click",
-                "name": "成语接龙",
-                "key":  "cyjl"
-            },
-            {
-                "name": "公众平台",
-                "sub_button":
-                [
-                    {
-                        "type": "view",
-                        "name": "更新公告",
-                        "url": "http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1418702138&token=&lang=zh_CN"
-                    },
-                    {
-                        "type": "view",
-                        "name": "接口权限说明",
-                        "url": "http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1418702138&token=&lang=zh_CN"
-                    },
-                    {
-                        "type": "view",
-                        "name": "返回码说明",
-                        "url": "http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1433747234&token=&lang=zh_CN"
-                    }
-                ]
-            }
-          ]
-    }
-    """
-    accessToken = Base().get_acess_token()
-    print(accessToken)
-    myMenu.create(postJson, accessToken)
-
-
