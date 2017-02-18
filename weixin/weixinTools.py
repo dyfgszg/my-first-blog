@@ -28,8 +28,8 @@ class TextMsg(Msg):
         super().__init__(xmlData)
         self.Content = xmlData.find('Content').text
         self.dict = dict()
-        self.dict['ToUserName'] = self.ToUserName
-        self.dict['FromUserName'] = self.FromUserName
+        self.dict['ToUserName'] = self.FromUserName
+        self.dict['FromUserName'] = self.ToUserName
         self.dict['CreateTime'] = int(time.time())
         self.dict['Content'] = self.Content
         self.dict['MsgType'] = self.MsgType
