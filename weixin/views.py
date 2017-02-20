@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import hashlib
+import sqlite3
 import time
 from lxml import etree
 from django.views.generic.base import View
@@ -33,12 +34,46 @@ class WeixinInterfaceView(View):
     def post(self, request):
         str_xml = request.body.decode('utf-8')  # use body to get raw data
         recMsg = parse_xml(str_xml)
-
-        if recMsg.Content == "help":
-            recMsg.dict['Content'] = u'1、直接回复，学你说话:)\n2、回复 cy+成语，玩成语接成'
-        else:
-            recMsg.dict['Content'] = ''.join(['我现在只能学你说话:', recMsg.Content,
-                           u'\n反过来说也行:', recMsg.Content[::-1]])
+        re_content = recMsg.Content.split("+", 1)
+        manage_key = re_content[0]
+        manage_list = {
+            'xs': self.xue_she,
+            'cy': self.cy_jielong,
+        }
+        manage = manage_list.get(manage_key, self.re_help)
+        try:
+            recMsg.dict['Content'] = manage(re_content[1])
+        except IndexError:
+            recMsg.dict['Content'] = manage(re_content[0])
         return render(request, 'reply_text.xml',
                       recMsg.dict, content_type='application/xml'
                       )
+
+    def re_help(self, content_txt):
+        return '1、回复xs+文字：学你说话:)\n2、回复 cy+成语：玩成语接龙'
+
+    def xue_she(self, content_txt):
+        return ''.join(['我现在只能学你说话:', content_txt,
+                        '\n反过来说也行:', content_txt[::-1]])
+
+    def cy_jielong(self, content_txt):
+
+        def get_input_word(input_word):
+            first_word = content_txt[len(input_word) - 1:len(input_word)]
+            return first_word
+
+        def get_result_by_input(input_word):
+            conn = sqlite3.connect("cnzz.db")
+            cursor = conn.cursor()
+            print(cursor)
+            cursor.execute('select ChengYU, DianGu from YesoulChenYu where ChengYu like "' + input_word + '%";')
+            res = cursor.fetchall()
+            res = ['-典故:'.join(strs) for strs in res]
+            res = '\n'.join(res)
+            cursor.close()
+            conn.close()
+            return res
+
+        input_word = content_txt
+        first_word = get_input_word(input_word)
+        return get_result_by_input(first_word)
