@@ -68,12 +68,12 @@ class WeixinInterfaceView(View):
             return first_word
 
         def get_result_by_input(input_word):
-            conn = sqlite3.connect( os.path.join(BASE_DIR, 'cnzz.db'))
+            conn = sqlite3.connect(os.path.join(BASE_DIR, 'cnzz.db'))
             cursor = conn.cursor()
             print(cursor)
             cursor.execute('select ChengYU, DianGu from YesoulChenYu where ChengYu like "' + input_word + '%";')
             res = cursor.fetchall()
-            res = ['-典故:'.join(strs) for strs in res]
+            res = ['-典故:'.join(strs) for strs in res[0:1]]
             res = '\n'.join(res)
             cursor.close()
             conn.close()
