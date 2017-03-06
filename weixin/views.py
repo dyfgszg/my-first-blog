@@ -2,6 +2,8 @@
 import hashlib
 import sqlite3
 import time
+import datetime
+import random
 from lxml import etree
 from django.views.generic.base import View
 from django.shortcuts import render
@@ -68,13 +70,14 @@ class WeixinInterfaceView(View):
             return first_word
 
         def get_result_by_input(input_word):
+            random.seed(datetime.datetime.now())
             conn = sqlite3.connect(os.path.join(BASE_DIR, 'cnzz.db'))
             cursor = conn.cursor()
             print(cursor)
             cursor.execute('select ChengYU, DianGu from YesoulChenYu where ChengYu like "' + input_word + '%";')
             res = cursor.fetchall()
-            res = ['-典故:'.join(strs) for strs in res[0:1]]
-            res = '\n'.join(res)
+            res = res[random.randint(0, len(res) - 1)]
+            res = '-典故:'.join(res)
             cursor.close()
             conn.close()
             return res
