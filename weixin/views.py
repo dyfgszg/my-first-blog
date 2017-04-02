@@ -46,6 +46,7 @@ class WeixinInterfaceView(View):
         manage_list = {
             'xs': self.xue_she,
             'cy': self.cy_jielong,
+            'web': self.web_go
         }
         manage = manage_list.get(manage_key, self.re_help)
         try:
@@ -57,14 +58,13 @@ class WeixinInterfaceView(View):
                       )
 
     def re_help(self, content_txt):
-        return '1、回复xs+文字：学你说话:)\n2、回复 cy+成语：玩成语接龙'
+        return '1、回复xs+文字：学你说话:)\n2、回复 cy+成语：玩成语接龙\n3、回复web+网址:访问网站'
 
     def xue_she(self, content_txt):
         return ''.join(['我现在只能学你说话:', content_txt,
                         '\n反过来说也行:', content_txt[::-1]])
 
     def cy_jielong(self, content_txt):
-
         def get_input_word(input_word):
             first_word = content_txt[len(input_word) - 1:len(input_word)]
             return first_word
@@ -85,3 +85,6 @@ class WeixinInterfaceView(View):
         input_word = content_txt
         first_word = get_input_word(input_word)
         return get_result_by_input(first_word)
+
+    def web_go(self, content_txt):
+        return content_txt
