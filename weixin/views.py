@@ -58,7 +58,7 @@ class WeixinInterfaceView(View):
                       )
 
     def re_help(self, content_txt):
-        return '1、回复xs+文字：学你说话:)\n2、回复 cy+成语：玩成语接龙\n3、回复web+网址:访问网站'
+        return '1、回复xs+文字：学你说话:)\n2、回复 cy+成语：玩成语接龙\n3、回复web+:访问指定网站'
 
     def xue_she(self, content_txt):
         return ''.join(['我现在只能学你说话:', content_txt,
@@ -87,4 +87,4 @@ class WeixinInterfaceView(View):
         return get_result_by_input(first_word)
 
     def web_go(self, content_txt):
-        return content_txt
+        return "".join(['请点击：', 'dyfgszg.pythonanywhere.com'])
